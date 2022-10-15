@@ -26,6 +26,12 @@ app.get("/help", (req: Request, res: Response) => {
   )
 })
 
+app.get("/final", (req: Request, res: Response) => {
+  res.send(
+    "Congratulations! You have finished the first chapter!\n\nBefore you go to the next chapter, check out the API game repository on GitHub: https://github.com/API-game/chapter-1\n\nMaybe you want to contribute? :)"
+  )
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

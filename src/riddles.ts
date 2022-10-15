@@ -42,7 +42,7 @@ router.post("/1", (req: Request, res: Response) => {
 })
 
 router.get("/2", (req: Request, res: Response) => {
-  res.send({ message: "That is the end of the game for now.\n\nThanks for playing!" })
+  res.send({ message: "That was the last riddle for now!", nextStep: "/final" })
 })
 
 module.exports = router
