@@ -15,10 +15,10 @@ build-local: ## Build image to be ran locally
 	- docker build -t $(IMAGE_ID):$(VERSION) ./
 
 run: ## RUN built image LOCALLY
-	- docker run -p 8888:8888 -v $(WORKING_DIR)/credentials:/app/credentials --env-file .env -it $(IMAGE_ID):$(VERSION)
+	- docker run -p 3000:3000 -v $(WORKING_DIR)/credentials:/app/credentials --env-file .env -it $(IMAGE_ID):$(VERSION)
 
 bash: ## Run BASH in built image
-	- docker run -p 8888:8888 -v $(WORKING_DIR)/credentials:/app/credentials --env-file .env -it $(IMAGE_ID):$(VERSION) bash
+	- docker run -p 3000:3000 -v $(WORKING_DIR)/credentials:/app/credentials --env-file .env -it $(IMAGE_ID):$(VERSION) bash
 
 push: ## PUSH CURRENT version (also marked as 'latest') to DockerHub repo
 	- docker tag $(REPOSITORY_HOSTNAME)/$(IMAGE_ID):$(VERSION) $(REPOSITORY_HOSTNAME)/$(IMAGE_ID):latest
