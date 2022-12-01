@@ -8,12 +8,15 @@ import { isJsonRequired } from "../utils"
 import { tutorial5GetHandler, tutorial5PostHandler } from "./05"
 import { tutorial6GetHandler, tutorial6PostHandler } from "./06"
 import { tutorial7Handler } from "./07"
+import { SuccessJsonResponseDto } from "../types"
 
 const express = require("express")
 const router = express.Router()
 
 export const indexRoute = (req: Request, res: Response) => {
-  const tutorials = [
+  const title = "Tutorials"
+
+  const firstTutorials = [
     {
       id: 1,
       title: "How to get help?",
@@ -31,18 +34,23 @@ export const indexRoute = (req: Request, res: Response) => {
       title: "Content-Type header",
     },
   ]
+
   const message = "This is a list of available tutorials"
 
+  const data: SuccessJsonResponseDto & { tutorials: typeof firstTutorials } = {
+    title,
+    message,
+    tutorials: firstTutorials.map((tutorial) => ({
+      ...tutorial,
+      path: `/tutorials/${tutorial.id}`,
+    })),
+    nextPage: "/tutorials/1",
+  }
+
   if (isJsonRequired(req)) {
-    res.send({
-      message,
-      tutorials: tutorials.map((tutorial) => ({
-        ...tutorial,
-        path: `/tutorials/${tutorial.id}`,
-      })),
-    })
+    res.send(data)
   } else {
-    res.render("tutorials/index", { message, tutorials })
+    res.render("tutorials/index", data)
   }
 }
 
