@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+import * as path from "path"
 
 const express = require("express")
 const router = express.Router()
@@ -45,4 +46,6 @@ router.get("/2", (req: Request, res: Response) => {
   res.send({ message: "That was the last riddle for now!", nextStep: "/final" })
 })
 
-module.exports = router
+const views = path.join(__dirname, "")
+
+export { router, views }

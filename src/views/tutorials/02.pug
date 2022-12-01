@@ -1,0 +1,10 @@
+extends ../layout
+
+block layout-content
+    div
+        h1 #{title}
+
+        p Now, take a look at the headers I've sent you with this message (in Postman and Chrome dev tools you will find it in `Headers` tab).
+        p You should be able to headers there, like `Content-Type`, `X-Powered-By`, and so on.
+        p Headers contain a lot of useful information and we will use it sometimes to send you some hints.
+        p Now, go to #[a(href='/tutorials/3') /tutorials/3]

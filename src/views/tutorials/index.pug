@@ -1,0 +1,12 @@
+extends ../layout
+
+block layout-content
+    div
+        h1 Tutorials
+
+        p #{message}
+
+        ul
+            each tutorial in tutorials
+                li
+                    a(href='/tutorials/' + tutorial.id)= tutorial.id + ': ' + tutorial.title

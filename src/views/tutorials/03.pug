@@ -1,0 +1,11 @@
+extends ../layout
+
+block layout-content
+    div
+        h1 #{title}
+
+        p You can also send custom headers in your response. For example, you can send `X-My-Name` header with your name in it.
+
+        p For custom headers we usually use naming convention with the prefix `X-`.
+
+        p Go to #[a(href='/tutorials/4') /tutorials/4].
