@@ -10,11 +10,17 @@ This is the first chapter of the API game.
 
 ## Deployment
 
+### Build a Docker image
+
 ```bash
 yarn release
 make build
 make push
 ```
+
+### Run the Docker image
+
+
 
 ## License
 

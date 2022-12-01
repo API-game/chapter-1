@@ -1,35 +1,33 @@
 import { Request, Response } from "express"
+import * as path from "path"
 
 const express = require("express")
 const bodyParser = require("body-parser")
 
 const app = express()
-const port = 3000
+const port = 3001
 
 const tutorials = require("./tutorials")
 const riddles = require("./riddles")
 
 app.use(bodyParser.json())
 
+app.set("view engine", "pug")
+app.set("views", path.join(__dirname, "./views"))
+
 app.use("/tutorials", tutorials)
 app.use("/riddles", riddles)
 
 app.get("/", (req: Request, res: Response) => {
-  res.send(
-    "Welcome to API game: chapter 1!\n\nLet's learn some REST API basics.\n\nGo to /tutorials to learn API and Postman basics and get familiar with the game.\nGo to /riddles to start a game!"
-  )
+  res.render("index", { title: "Home" })
 })
 
 app.get("/help", (req: Request, res: Response) => {
-  res.send(
-    "API game help\n\nIt is created to help you learn more about APIs.\n\nYou can start playing by going to /tutorials endpoint.\n\nYou can also learn more about APIs by going to /api-info endpoint.\n\nTo unlock the next riddle you need to solve the previous one.\n\nGood luck!"
-  )
+  res.render("help", { title: "Help" })
 })
 
 app.get("/final", (req: Request, res: Response) => {
-  res.send(
-    "Congratulations! You have finished the first chapter!\n\nBefore you go to the next chapter, check out the API game repository on GitHub: https://github.com/API-game/chapter-1\n\nMaybe you want to contribute? :)"
-  )
+  res.render("final", { title: "Finished Chapter 1" })
 })
 
 app.listen(port, () => {
