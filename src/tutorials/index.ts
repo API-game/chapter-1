@@ -4,11 +4,10 @@ import * as path from "path"
 import { tutorial2Handler } from "./02"
 import { tutorial3Handler } from "./03"
 import { tutorial4Handler } from "./04"
+import { isJsonRequired } from "../utils"
 
 const express = require("express")
 const router = express.Router()
-
-const isJsonRequired = (req: Request) => req.headers["content-type"] === "application/json"
 
 export const indexRoute = (req: Request, res: Response) => {
   const tutorials = [
