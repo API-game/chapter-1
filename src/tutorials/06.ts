@@ -8,10 +8,12 @@ export const tutorial6GetHandler = (req: Request, res: Response) => {
 export const tutorial6PostHandler = (req: Request, res: Response) => {
   const body = req.body
 
-  if (body && body.name) {
+  const isRequestValid = body && body.name
+
+  if (isRequestValid) {
     const data: TutorialsSuccessJsonResponseDto = {
       title: "Tutorial 6 - POST request",
-      message: `Great! Now you know how to send data in the request body. Your name is "${body.name}".`,
+      message: `Awesome, ${body.name}! Now you know how to send data in the request body.`,
       prevTutorial: "/tutorials/5",
       nextTutorial: "/tutorials/7",
     }
