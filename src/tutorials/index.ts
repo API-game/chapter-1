@@ -5,6 +5,8 @@ import { tutorial2Handler } from "./02"
 import { tutorial3Handler } from "./03"
 import { tutorial4Handler } from "./04"
 import { isJsonRequired } from "../utils"
+import { tutorial5GetHandler, tutorial5PostHandler } from "./05"
+import { tutorial6GetHandler, tutorial6PostHandler } from "./06"
 
 const express = require("express")
 const router = express.Router()
@@ -50,41 +52,12 @@ router.get("/2", tutorial2Handler)
 router.get("/3", tutorial3Handler)
 router.get("/4", tutorial4Handler)
 
-router.get("/5", (req: Request, res: Response) => {
-  res.send(
-    "Now let's talk about HTTP methods.\n\nThere are 4 main HTTP methods:\n- GET\n- POST\n- PUT\n- DELETE\n\nTry to change the method of your request to `POST` and send it again."
-  )
-})
+router.get("/5", tutorial5GetHandler)
+router.post("/5", tutorial5PostHandler)
 
-router.post("/5", (req: Request, res: Response) => {
-  res.send({
-    message: "Great! Now you know how to send POST requests.",
-    prevTutorial: "/tutorials/4",
-    nextTutorial: "/tutorials/6",
-  })
-})
+router.get("/6", tutorial6GetHandler)
 
-router.get("/6", (req: Request, res: Response) => {
-  res.send(
-    'Now, let\'s try to send some data in the request body.\n\nIn Postman you can do it in `Body` tab.\n\nSelect raw, then JSON format.\n\nThen send the request with your name.\n\nSchema:\n```json\n{"name": "your name"}\n```'
-  )
-})
-
-router.post("/6", (req: Request, res: Response) => {
-  const body = req.body
-
-  if (body && body.name) {
-    res.send({
-      message: `Great! Now you know how to send data in the request body. Your name is "${body.name}".`,
-      prevTutorial: "/tutorials/5",
-      nextTutorial: "/tutorials/7",
-    })
-  } else {
-    res.send(
-      'You need to send some data in the request body.\n\nIn Postman you can do it in `Body` tab.\n\nSelect raw, then JSON format.\n\nThen send the request with some data in the body.\n\nFor example:\n```json\n{"name": "your name"}\n```'
-    )
-  }
-})
+router.post("/6", tutorial6PostHandler)
 
 router.get("/7", (req: Request, res: Response) => {
   res.send({

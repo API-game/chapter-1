@@ -1,0 +1,18 @@
+extends ../layout
+
+block layout-content
+    div
+        h1 #{title}
+
+        p Now, let's try to send some data in the request body.
+
+        p In Postman you can do it in `Body` tab.
+
+        p Select raw, then JSON format.
+
+        p Then send the request with your name.
+
+        p Schema:
+
+        code.
+            {"name": "your name"}
