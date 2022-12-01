@@ -1,14 +1,11 @@
 import { Request, Response } from "express"
 import * as path from "path"
+import { indexHandler } from "./00"
 
 const express = require("express")
 const router = express.Router()
 
-router.get("/", (req: Request, res: Response) => {
-  res.send(
-    "Welcome to the game!\n\nTo solve the riddle you need to send a request to the specific endpoint.\n\nFor example, to start solving the first riddle you need to send a GET request to `/riddles/1`.\n\nGood luck!"
-  )
-})
+router.get("/", indexHandler)
 
 const riddle1answers = ["A duck's opinion.", "One leg is both the same."]
 router.get("/1", (req: Request, res: Response) => {
