@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.3](https://github.com/API-game/chapter-1/compare/v1.3.2...v1.3.3) (2022-12-01)
+
+
+### Bug Fixes
+
+* views not being included in the docker image ([7cad1de](https://github.com/API-game/chapter-1/commit/7cad1ded5ec319df2807a69f36a6d53a5b5e6efd))
+
 ### [1.3.2](https://github.com/API-game/chapter-1/compare/v1.3.1...v1.3.2) (2022-12-01)
 
 ### [1.3.1](https://github.com/API-game/chapter-1/compare/v1.3.0...v1.3.1) (2022-12-01)
