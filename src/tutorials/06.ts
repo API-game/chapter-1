@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { ErrorJsonResponseDto, TutorialsSuccessJsonResponseDto } from "../types"
+import { ErrorJsonResponseDto, SuccessJsonResponseDto } from "../types"
 
 export const tutorial6GetHandler = (req: Request, res: Response) => {
   res.render("tutorials/06", { title: "Tutorial 6 - POST request" })
@@ -11,11 +11,11 @@ export const tutorial6PostHandler = (req: Request, res: Response) => {
   const isRequestValid = body && body.name
 
   if (isRequestValid) {
-    const data: TutorialsSuccessJsonResponseDto = {
+    const data: SuccessJsonResponseDto = {
       title: "Tutorial 6 - POST request",
       message: `Awesome, ${body.name}! Now you know how to send data in the request body.`,
-      prevTutorial: "/tutorials/5",
-      nextTutorial: "/tutorials/7",
+      prevPage: "/tutorials/5",
+      nextPage: "/tutorials/7",
     }
     res.send(data)
   } else {

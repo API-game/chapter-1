@@ -1,11 +1,8 @@
 export type SuccessJsonResponseDto = {
   title: string
   message: string
-}
-
-export type TutorialsSuccessJsonResponseDto = SuccessJsonResponseDto & {
-  prevTutorial: string
-  nextTutorial: string
+  nextPage?: string
+  prevPage?: string
 }
 
 export type ErrorJsonResponseDto = {

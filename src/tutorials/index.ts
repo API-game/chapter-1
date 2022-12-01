@@ -7,6 +7,7 @@ import { tutorial4Handler } from "./04"
 import { isJsonRequired } from "../utils"
 import { tutorial5GetHandler, tutorial5PostHandler } from "./05"
 import { tutorial6GetHandler, tutorial6PostHandler } from "./06"
+import { tutorial7Handler } from "./07"
 
 const express = require("express")
 const router = express.Router()
@@ -56,16 +57,9 @@ router.get("/5", tutorial5GetHandler)
 router.post("/5", tutorial5PostHandler)
 
 router.get("/6", tutorial6GetHandler)
-
 router.post("/6", tutorial6PostHandler)
 
-router.get("/7", (req: Request, res: Response) => {
-  res.send({
-    message: "Now you know the basics of REST API and using Postman.\n\nLet's start a game!",
-    prevTutorial: "/tutorials/6",
-    nextStep: "/riddles",
-  })
-})
+router.get("/7", tutorial7Handler)
 
 const views = path.join(__dirname, "")
 
