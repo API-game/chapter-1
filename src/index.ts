@@ -16,7 +16,7 @@ app.use("/tutorials", tutorials.router)
 app.use("/riddles", riddles.router)
 
 app.set("view engine", "pug")
-app.set("views", [path.join(__dirname, "views"), tutorials.views, riddles.views])
+app.set("views", path.join(__dirname, "/../views"))
 
 app.get("/", (req: Request, res: Response) => {
   res.render("index", { title: "Home" })
@@ -33,4 +33,10 @@ app.get("/final", (req: Request, res: Response) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
 export { isJsonRequired } from "./utils"
+
+process.on("SIGINT", () => {
+  console.log("Bye bye!")
+  process.exit()
+})

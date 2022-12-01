@@ -1,6 +1,5 @@
 import { Request, Response } from "express"
 import { tutorial1Handler } from "./01"
-import * as path from "path"
 import { tutorial2Handler } from "./02"
 import { tutorial3Handler } from "./03"
 import { tutorial4Handler } from "./04"
@@ -11,7 +10,7 @@ import { tutorial7Handler } from "./07"
 import { SuccessJsonResponseDto } from "../types"
 
 const express = require("express")
-const router = express.Router()
+export const router = express.Router()
 
 export const indexRoute = (req: Request, res: Response) => {
   const title = "Tutorials"
@@ -68,7 +67,3 @@ router.get("/6", tutorial6GetHandler)
 router.post("/6", tutorial6PostHandler)
 
 router.get("/7", tutorial7Handler)
-
-const views = path.join(__dirname, "")
-
-export { router, views }

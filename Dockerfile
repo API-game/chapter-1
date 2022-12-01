@@ -15,12 +15,14 @@ COPY tsconfig*.json ./
 RUN yarn
 
 COPY src ./src
+COPY views ./views
 RUN yarn build
 
 ### Run app
 FROM $NODE as ts-remover
 WORKDIR /app
 COPY --from=ts-compiler /app/dist ./dist
+COPY --from=ts-compiler /app/views ./views
 
 RUN chown node:node /app
 USER node

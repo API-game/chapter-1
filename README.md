@@ -14,7 +14,11 @@ This is the first chapter of the API game.
 
 ```bash
 yarn release
+```
+```bash
 make build
+```
+```bash
 make push
 ```
 

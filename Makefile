@@ -1,6 +1,7 @@
 WORKING_DIR = $(shell pwd)
 VERSION=$(shell node -pe "require('./package.json').version")
-IMAGE_ID=kuklatech/api-game-chapter-1
+CONTAINER_NAME=api-game-chapter-1
+IMAGE_ID=kuklatech/$(CONTAINER_NAME)
 REPOSITORY_HOSTNAME=registry.gitlab.com
 
 smash: ## Remove all `node_modules` folders
@@ -15,10 +16,14 @@ build-local: ## Build image to be ran locally
 	- docker build -t $(IMAGE_ID):$(VERSION) ./
 
 run: ## RUN built image LOCALLY
-	- docker run -p 3000:3000 -v $(WORKING_DIR)/credentials:/app/credentials --env-file .env -it $(IMAGE_ID):$(VERSION)
+	- docker run -d --name $(CONTAINER_NAME) -p 3001:3001 -v $(WORKING_DIR)/credentials:/app/credentials --env-file .env -it $(IMAGE_ID):$(VERSION)
+
+stop: ## STOP running image
+	docker stop $(CONTAINER_NAME) && docker rm $(CONTAINER_NAME)
+
 
 bash: ## Run BASH in built image
-	- docker run -p 3000:3000 -v $(WORKING_DIR)/credentials:/app/credentials --env-file .env -it $(IMAGE_ID):$(VERSION) bash
+	- docker exec $(IMAGE_ID):$(VERSION) /bin/bash
 
 push: ## PUSH CURRENT version (also marked as 'latest') to DockerHub repo
 	- docker tag $(REPOSITORY_HOSTNAME)/$(IMAGE_ID):$(VERSION) $(REPOSITORY_HOSTNAME)/$(IMAGE_ID):latest
