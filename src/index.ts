@@ -30,6 +30,11 @@ app.get("/final", (req: Request, res: Response) => {
   res.render("final", { title: "Finished Chapter 1" })
 })
 
+app.get("*", (req: Request, res: Response) => {
+  res.setHeader("X-Hint", "Go to `/help` to see the available endpoints.")
+  res.status(404).render("404", { title: "404" })
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
