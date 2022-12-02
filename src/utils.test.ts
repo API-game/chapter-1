@@ -1,5 +1,5 @@
 import { Request } from "express"
-import { isJsonRequired } from "./utils"
+import { getHint, getRandomHint, isJsonRequired } from "./utils"
 
 describe("isJsonRequired", () => {
   it("should return true for application/json", () => {
@@ -27,5 +27,25 @@ describe("isJsonRequired", () => {
       },
     } as Request
     expect(isJsonRequired(req)).toBe(false)
+  })
+})
+
+describe("Hints", () => {
+  const hints = [
+    `This is the first stage, so you should be looking for something related to the number "1".`,
+    `"GET" is an HTTP method that indicates that you're retrieving information from a server.`,
+  ]
+
+  it("should return a hint", () => {
+    expect(getHint(0, hints)).toBe(hints[0])
+    expect(getHint(1, hints)).toBe(hints[1])
+  })
+
+  it("should return a random hint", () => {
+    expect(hints).toContain(getRandomHint(hints))
+  })
+
+  it("should return undefined if no hints are available", () => {
+    expect(getRandomHint([])).toBeUndefined()
   })
 })

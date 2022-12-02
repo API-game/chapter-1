@@ -1,14 +1,15 @@
-import * as path from "path"
-import { indexHandler } from "./00"
-import { stage1GetHandler, stage1PostHandler } from "./01"
-import { stage2Handler } from "./02"
+import { beachItemNoteHandler, beachItemsHandler, beachRockHandler } from "./00"
+import { Request, Response } from "express"
 
 const express = require("express")
 export const router = express.Router()
 
-router.get("/", indexHandler)
+const stagesHandler = (req: Request, res: Response) => {
+  res.redirect("/stages/beach")
+}
 
-router.get("/1", stage1GetHandler)
-router.post("/1", stage1PostHandler)
+router.get("/", stagesHandler)
 
-router.get("/2", stage2Handler)
+router.get("/beach", beachRockHandler)
+router.get("/beach/items", beachItemsHandler)
+router.get("/beach/items/note", beachItemNoteHandler)
