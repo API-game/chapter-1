@@ -1,20 +1,20 @@
 import { Request, Response } from "express"
 import { ErrorJsonResponseDto, SuccessJsonResponseDto } from "../types"
 
-export const riddle1answers = ["A duck's opinion.", "One leg is both the same."]
+const question = ""
+const hints = []
+const answer = ""
 
-export const riddle1GetHandler = (req: Request, res: Response) => {
-  const answer = riddle1answers[Math.floor(Math.random() * riddle1answers.length)]
-
+export const stage1GetHandler = (req: Request, res: Response) => {
   res.setHeader("X-Answer", answer)
   res.setHeader("Content-Type", "plain/text")
-  res.send("What is the difference between a duck?")
+  res.send(question)
 }
 
-export const riddle1PostHandler = (req: Request, res: Response) => {
-  const answer = req.body.answer
+export const stage1PostHandler = (req: Request, res: Response) => {
+  const userAnswer = req.body.answer
 
-  if (!answer) {
+  if (!userAnswer) {
     res.status(400)
     res.setHeader("X-Hint", "Use `answer` key in the request body.")
     const errorData: ErrorJsonResponseDto = {
@@ -24,11 +24,11 @@ export const riddle1PostHandler = (req: Request, res: Response) => {
     return
   }
 
-  if (riddle1answers.includes(answer)) {
+  if (answer === userAnswer) {
     const data: SuccessJsonResponseDto = {
-      title: "Riddle 1",
-      message: "Congratulations! You have solved the first riddle!",
-      nextPage: "/riddles/2",
+      title: "stage 1",
+      message: "Congratulations! You have solved the first stage!",
+      nextPage: "/stages/2",
     }
     res.send(data)
   } else {

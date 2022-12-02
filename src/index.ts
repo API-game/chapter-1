@@ -8,12 +8,12 @@ const app = express()
 const port = 3001
 
 import * as tutorials from "./tutorials"
-import * as riddles from "./riddles"
+import * as stages from "./stages"
 
 app.use(bodyParser.json())
 
 app.use("/tutorials", tutorials.router)
-app.use("/riddles", riddles.router)
+app.use("/stages", stages.router)
 
 app.set("view engine", "pug")
 app.set("views", path.join(__dirname, "/../views"))
