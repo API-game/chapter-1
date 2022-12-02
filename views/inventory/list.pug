@@ -1,0 +1,12 @@
+extends ../layout
+
+block layout-content
+    h1 #{title}
+
+    if !items.length
+        p You have no items!
+
+    ul
+        each item in items
+            li
+                a(href='/inventory/' + item.slug)= item.name + ': ' + item.description

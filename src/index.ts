@@ -1,19 +1,34 @@
 import { Request, Response } from "express"
 import * as path from "path"
 
+import * as tutorials from "./tutorials"
+import * as stages from "./stages"
+import * as inventory from "./inventory"
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config()
+}
+
 const express = require("express")
 const bodyParser = require("body-parser")
 
 const app = express()
 const port = 3001
 
-import * as tutorials from "./tutorials"
-import * as stages from "./stages"
-
 app.use(bodyParser.json())
+
+app.use((req: Request, res: Response, next: any) => {
+  const token = req.headers.authorization?.split(" ")[1]
+  if (token) {
+    res.locals.token = token
+  }
+
+  next()
+})
 
 app.use("/tutorials", tutorials.router)
 app.use("/stages", stages.router)
+app.use("/inventory", inventory.router)
 
 app.set("view engine", "pug")
 app.set("views", path.join(__dirname, "/../views"))
