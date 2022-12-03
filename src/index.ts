@@ -93,3 +93,4 @@ process.on("SIGINT", () => {
 })
 export { TempUserDto } from "./types"
 export { getSlugFromItemResourcePath } from "./utils"
+export { PlayerItem } from "./types"

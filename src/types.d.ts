@@ -32,3 +32,12 @@ export type TempUserDto = {
   apiKey: string
   createdAt: string
 }
+
+export type PlayerItem = {
+  id: number
+  slug: string
+  name: string
+  description: string
+  resourcePath: string
+  createdAt: string
+}

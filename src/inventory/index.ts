@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import axios, { AxiosResponse } from "axios"
 import { getSlugFromItemResourcePath, sendRandomHint } from "../utils"
-import { TempUserDto } from "../types"
+import { PlayerItem, TempUserDto } from "../types"
 
 const express = require("express")
 export const router = express.Router()
@@ -10,46 +10,73 @@ export const getStartApiUrl = () => {
   return process.env.START_API_URL || ""
 }
 
-const getInventoryItems = async (token: string) => {
+const getInventoryItems = async (token: string): Promise<PlayerItem[]> => {
   const baseUrl = getStartApiUrl()
-  const url = `${baseUrl}/api/users/me/inventory`
+  const url = `${baseUrl}/users/me/inventory`
   const response = await axios.get(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   })
 
-  return response.data.items
+  return response.data
 }
 
-type InventoryItem = {
-  slug: string
-  name: string
-  description: string
+const addMagicalMap = (items: PlayerItem[]) => {
+  const map = {
+    id: 1,
+    slug: "map",
+    name: "Map",
+    resourcePath: "map",
+    description: "A magical, interactive map of the island",
+    createdAt: new Date().toString(),
+  }
+
+  return [map, ...items]
+}
+
+const getAllItems = async (token: string | undefined): Promise<PlayerItem[]> => {
+  if (token) {
+    try {
+      const items = await getInventoryItems(token)
+      return addMagicalMap(items)
+    } catch (e: any) {
+      console.error(e)
+    }
+  }
+
+  return addMagicalMap([])
 }
 
 const getInventoryHandler = async (req: Request, res: Response) => {
   const title = "Inventory"
 
-  const token = res.locals.token
-  if (token) {
-    const items = await getInventoryItems(token)
-    res.render("inventory/list", { title, items })
-  } else {
-    const items: InventoryItem[] = [
-      {
-        slug: "map",
-        name: "Map",
-        description: "A magical, interactive map of the island",
-      },
-    ]
+  const items = await getAllItems(res.locals.token)
 
-    res.render("inventory/list", { title, items })
+  res.render("inventory/list", { title, items })
+}
+
+type CreateItemRequestDto = Pick<PlayerItem, "slug" | "resourcePath" | "name" | "description">
+
+async function getItemByResourcePath(itemResourcePath: string): Promise<CreateItemRequestDto> {
+  if (itemResourcePath === "/stages/beach/items/note") {
+    return {
+      slug: getSlugFromItemResourcePath(itemResourcePath),
+      resourcePath: itemResourcePath,
+      name: "Note",
+      description:
+        "A weird note from the beach. It says:\n\n" +
+        "If you would like to take me with you,\n" +
+        "Your inventory, you must pursue.\n" +
+        "Send a request with the resource path,\n" +
+        "And you'll have me in no time, alas!",
+    }
   }
+
+  throw new Error("Couldn't find item")
 }
 
 const postInventoryHandler = async (req: Request, res: Response) => {
-  // TODO: validate if has token
   const token = res.locals.token
 
   if (!token) {
@@ -59,19 +86,15 @@ const postInventoryHandler = async (req: Request, res: Response) => {
 
   const baseUrl = getStartApiUrl()
   const url = `${baseUrl}/users/me/inventory`
+
   try {
-    const response = await axios.post(
-      url,
-      {
-        slug: getSlugFromItemResourcePath(req.body.item),
-        resourcePath: req.body.item,
+    const item = await getItemByResourcePath(req.body.item)
+
+    const response = await axios.post(url, item, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    })
 
     if (response.status === 201) {
       res.setHeader("Location", "/inventory/")
@@ -185,7 +208,34 @@ const postMapHandler = async (req: Request, res: Response) => {
   }
 }
 
+const getItemHandler = async (req: Request, res: Response) => {
+  // fetch item from api by its slug
+  const { slug } = req.params
+  if (!slug) {
+    res.status(400).send("Missing slug")
+    return
+  }
+
+  try {
+    const baseUrl = getStartApiUrl()
+    const url = `${baseUrl}/users/me/inventory/${slug}`
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${res.locals.token}`,
+      },
+    })
+
+    const item = response.data
+
+    res.render("inventory/item", { title: `Inventory: ${item.name}`, item })
+  } catch (e: any) {
+    console.error(e)
+    res.status(404).render("404")
+  }
+}
+
 router.get("/", getInventoryHandler)
 router.post("/", postInventoryHandler)
 router.get("/map", getMapHandler)
 router.post("/map", postMapHandler)
+router.get("/:slug", getItemHandler)
