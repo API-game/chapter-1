@@ -18,10 +18,7 @@ Go to [API-game](https://apigame.kukla.tech) or [API-game chapter 1](https://cha
 yarn release
 ```
 ```bash
-make build
-```
-```bash
-make push
+make build && make push
 ```
 
 ### Run the Docker image

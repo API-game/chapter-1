@@ -16,7 +16,7 @@ build-local: ## Build image to be ran locally
 	- docker build -t $(IMAGE_ID):$(VERSION) ./
 
 run: ## RUN built image LOCALLY
-	- docker run -d --name $(CONTAINER_NAME) -p 3001:3001 -v $(WORKING_DIR)/credentials:/app/credentials --env-file .env -it $(IMAGE_ID):$(VERSION)
+	- docker run -d --name $(CONTAINER_NAME) -p 3001:3001 -v $(WORKING_DIR)/credentials:/app/credentials --env-file .env.docker-local -it $(IMAGE_ID):$(VERSION)
 
 stop: ## STOP running image
 	docker stop $(CONTAINER_NAME) && docker rm $(CONTAINER_NAME)
