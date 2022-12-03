@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/API-game/chapter-1/compare/v1.3.3...v1.4.0) (2022-12-03)
+
+
+### Features
+
+* add introduction to the game ([7ee8817](https://github.com/API-game/chapter-1/commit/7ee8817cccc8fc2655f3c4262772563e2123b61f))
+* add item to inventory ([61b170b](https://github.com/API-game/chapter-1/commit/61b170b750757097c578e928a4f22b710e3fab60))
+* add mysterious welcome page that sets a scene for the game ([af45118](https://github.com/API-game/chapter-1/commit/af451188ae8c0496f0db0e9e090faffb240305a6))
+* display name of the user on the map and add narration ([49d2840](https://github.com/API-game/chapter-1/commit/49d2840dd51f8b4e91e88eddded476901585a4d7))
+* fetching and displaying inventory items ([bb617c6](https://github.com/API-game/chapter-1/commit/bb617c691dc911c38be73809bbe5b195d3fcd6a4))
+* first riddle and hint to search for items and a note with another riddle ([f550664](https://github.com/API-game/chapter-1/commit/f550664ae691592e7dac1d50a57ce9d4ae3fdcc1))
+* obtaining api key by sending post to a map ([db70da7](https://github.com/API-game/chapter-1/commit/db70da721a469a392c909e694024cfce005a8464))
+
 ### [1.3.3](https://github.com/API-game/chapter-1/compare/v1.3.2...v1.3.3) (2022-12-01)
 
 

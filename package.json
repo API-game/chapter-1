@@ -1,6 +1,6 @@
 {
   "name": "api-game-chapter-1",
-  "version": "1.3.3",
+  "version": "1.4.0",
   "main": "dist/index.js",
   "repository": "https://github.com/API-game/chapter-1.git",
   "author": "Michał Kukla <michal@kukla.tech>",
