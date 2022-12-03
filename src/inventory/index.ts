@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import axios, { AxiosResponse } from "axios"
-import { sendRandomHint } from "../utils"
+import { getSlugFromItemResourcePath, sendRandomHint } from "../utils"
 import { TempUserDto } from "../types"
 
 const express = require("express")
@@ -48,7 +48,7 @@ const getInventoryHandler = async (req: Request, res: Response) => {
   }
 }
 
-const postInventoryHandler = (req: Request, res: Response) => {
+const postInventoryHandler = async (req: Request, res: Response) => {
   // TODO: validate if has token
   const token = res.locals.token
 
@@ -58,9 +58,73 @@ const postInventoryHandler = (req: Request, res: Response) => {
   }
 
   const baseUrl = getStartApiUrl()
-  const url = `${baseUrl}/api/users/me/inventory`
+  const url = `${baseUrl}/users/me/inventory`
+  try {
+    const response = await axios.post(
+      url,
+      {
+        slug: getSlugFromItemResourcePath(req.body.item),
+        resourcePath: req.body.item,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
 
-  res.status(201).send()
+    if (response.status === 201) {
+      res.setHeader("Location", "/inventory/")
+      res.status(201).send()
+      return
+    }
+  } catch (e: any) {
+    if (e.response.status === 409) {
+      res.status(409).send("Item already exists")
+      return
+    }
+
+    console.error(e)
+  }
+
+  res.status(500).render("500")
+}
+
+const deleteItemFromInventoryHandler = async (req: Request, res: Response) => {
+  const token = res.locals.token
+  const { item } = req.body
+
+  if (!item) {
+    res.status(400).send("Missing item")
+    return
+  }
+
+  if (!token) {
+    res.status(401).send("Unauthorized")
+    return
+  }
+
+  const baseUrl = getStartApiUrl()
+  const url = `${baseUrl}/api/users/me/inventory/${item}`
+
+  try {
+    const response = await axios.delete(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (response.status === 204) {
+      res.status(204).send()
+      return
+    } else {
+      res.status(500).render("500")
+      return
+    }
+  } catch (e: any) {
+    console.error(e)
+    res.status(500).render("500")
+  }
 }
 
 const getMapHandler = async (req: Request, res: Response) => {

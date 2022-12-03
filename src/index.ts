@@ -6,6 +6,8 @@ import * as stages from "./stages"
 import * as inventory from "./inventory"
 import { TempUserDto } from "./types"
 import { getUserLazily } from "./utils"
+import axios from "axios"
+import { getStartApiUrl } from "./inventory"
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config()
@@ -26,6 +28,31 @@ app.use((req: Request, res: Response, next: any) => {
   }
 
   res.locals.getUser = getUserLazily(res)
+
+  next()
+})
+
+app.use((req: Request, res: Response, next: any) => {
+  const baseUrl = getStartApiUrl()
+  const url = `${baseUrl}/events`
+  const data = {
+    ip: req.ip,
+    apiKey: res.locals.token,
+    url: req.url,
+    method: req.method,
+    headers: req.headers,
+    body: req.body,
+  }
+
+  axios
+    .post(url, data)
+    .then(() => {
+      console.debug("Event sent to analytics")
+    })
+    .catch((err: any) => {
+      console.warn("Failed to send event to analytics")
+      console.error(err)
+    })
 
   next()
 })
@@ -65,3 +92,4 @@ process.on("SIGINT", () => {
   process.exit()
 })
 export { TempUserDto } from "./types"
+export { getSlugFromItemResourcePath } from "./utils"

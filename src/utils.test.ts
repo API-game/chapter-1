@@ -1,5 +1,5 @@
 import { Request } from "express"
-import { getHint, getRandomHint, isJsonRequired } from "./utils"
+import { getHint, getRandomHint, getSlugFromItemResourcePath, isJsonRequired } from "./utils"
 
 describe("isJsonRequired", () => {
   it("should return true for application/json", () => {
@@ -47,5 +47,19 @@ describe("Hints", () => {
 
   it("should return undefined if no hints are available", () => {
     expect(getRandomHint([])).toBeUndefined()
+  })
+})
+
+describe("getSlugFromItemResourcePath", () => {
+  it("should return beach-note for the resource path /stages/beach/items/note", () => {
+    const item = "/stages/beach/items/note"
+
+    expect(getSlugFromItemResourcePath(item)).toBe("beach-note")
+  })
+
+  it("should throw if no stage nor items is found in the resource path", () => {
+    const item = "/foo/bar"
+
+    expect(() => getSlugFromItemResourcePath(item)).toThrow()
   })
 })

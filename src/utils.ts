@@ -61,3 +61,16 @@ export const getUserLazily =
 
     return undefined
   }
+
+export const getSlugFromItemResourcePath = (path: any): string => {
+  const parts = path.split("/")
+
+  if (parts.length < 2 || parts[3] !== "items" || parts[1] !== "stages") {
+    throw new Error(`Invalid item resource path: ${path}`)
+  }
+
+  const stage = parts[2]
+  const itemSlug = parts[4]
+
+  return `${stage}-${itemSlug}`
+}
