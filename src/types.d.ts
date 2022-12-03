@@ -1,3 +1,17 @@
+import "express"
+
+interface Locals {
+  token?: string
+  user?: TempUserDto
+  getUser: () => Promise<TempUserDto | undefined>
+}
+
+declare module "express" {
+  export interface Response {
+    locals: Locals
+  }
+}
+
 export type SuccessJsonResponseDto = {
   title: string
   message: string
@@ -10,4 +24,11 @@ export type ErrorJsonResponseDto = {
     code: string
     message: string
   }
+}
+
+export type TempUserDto = {
+  id: number
+  name: string
+  apiKey: string
+  createdAt: string
 }

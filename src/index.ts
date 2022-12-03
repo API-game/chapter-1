@@ -4,6 +4,8 @@ import * as path from "path"
 import * as tutorials from "./tutorials"
 import * as stages from "./stages"
 import * as inventory from "./inventory"
+import { TempUserDto } from "./types"
+import { getUserLazily } from "./utils"
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config()
@@ -22,6 +24,8 @@ app.use((req: Request, res: Response, next: any) => {
   if (token) {
     res.locals.token = token
   }
+
+  res.locals.getUser = getUserLazily(res)
 
   next()
 })
@@ -60,3 +64,4 @@ process.on("SIGINT", () => {
   console.log("Bye bye!")
   process.exit()
 })
+export { TempUserDto } from "./types"

@@ -4,3 +4,23 @@ block layout-content
     h1 #{title}
 
     p A magical, interactive map of the island
+
+    if name
+        p.
+            You notice #[code #{name}] written on it in shimmering gold.
+
+    if apiTokenHint
+        div.narration
+            p You are examining the map, when suddenly you notice a piece of paper stuck to the back of it. On it, there is a riddle written in a strange, rhyming language.
+            blockquote
+                .
+                    A name to write upon this map
+                br
+                .
+                    To gain a token that your journey may last
+                br
+                .
+                    Once written, it will not come back
+                br
+                .
+                    So take care not to make a mistake"

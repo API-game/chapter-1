@@ -1,12 +1,5 @@
 import { Request, Response } from "express"
-import { getRandomHint } from "../utils"
-
-function sendRandomHint(hints: string[], res: Response) {
-  const randomHint = getRandomHint(hints)
-  if (randomHint) {
-    res.setHeader("X-Hint", randomHint)
-  }
-}
+import { sendRandomHint } from "../utils"
 
 export const beachRockHandler = (req: Request, res: Response) => {
   const hints = [

@@ -1,5 +1,7 @@
 import { Request, Response } from "express"
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
+import { sendRandomHint } from "../utils"
+import { TempUserDto } from "../types"
 
 const express = require("express")
 export const router = express.Router()
@@ -64,7 +66,24 @@ const postInventoryHandler = (req: Request, res: Response) => {
 const getMapHandler = async (req: Request, res: Response) => {
   const title = "Inventory: Map"
 
-  res.render("inventory/map", { title })
+  if (!res.locals.token) {
+    const hints = [
+      `The map needs a name - could it be your own?`,
+      `A token is needed to travel far - what kind of request can you send to obtain one?`,
+      `Don't forget to check the headers of the response - they might contain a clue!`,
+    ]
+    sendRandomHint(hints, res)
+    res.render("inventory/map", { title, apiTokenHint: true })
+  } else {
+    const user = await res.locals.getUser()
+    const name = user?.name || false
+
+    res.render("inventory/map", { title, name })
+  }
+}
+
+interface CreateTempUserResponseDto {
+  payload: { tempUser: TempUserDto }
 }
 
 const postMapHandler = async (req: Request, res: Response) => {
@@ -83,19 +102,20 @@ const postMapHandler = async (req: Request, res: Response) => {
   const baseUrl = getStartApiUrl()
   const url = `${baseUrl}/users`
 
-  const currentIp = req.ip
-
   try {
-    const response = await axios.post(url, { ip: currentIp, name })
+    const response = await axios.post<{ name: string }, AxiosResponse<CreateTempUserResponseDto>>(url, {
+      name,
+    })
 
     const {
-      payload: { token },
+      payload: {
+        tempUser: { apiKey: token },
+      },
     } = response.data
 
     res.setHeader("X-Token", token)
-    await getMapHandler(req, res)
+    res.render("inventory/map-obtained-token", { title: "Inventory: Map" })
   } catch (e: any) {
-    // TODO: Send error to sentry or Datadog or something to let know something is wrong
     console.error(e)
     res.status(500).render("500")
   }
